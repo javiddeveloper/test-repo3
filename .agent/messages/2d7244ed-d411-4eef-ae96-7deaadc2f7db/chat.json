@@ -24,5 +24,18 @@
     "role": "agent",
     "text": "",
     "cost": null
+  },
+  {
+    "id": "1784332049179-q16ff",
+    "ts": 1784332049179,
+    "role": "user",
+    "text": "اتنا"
+  },
+  {
+    "id": "1784332061922-eqc4t",
+    "ts": 1784332061922,
+    "role": "agent",
+    "text": "أهلاً! 👋\n\nيبدو أن رسالتك غير مكتملة. كيف يمكنني مساعدتك؟\n\n(Hello! Your message seems incomplete. How can I help you?)",
+    "cost": null
   }
 ]

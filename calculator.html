@@ -54,7 +54,7 @@
 
         .buttons {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 12px;
         }
 
@@ -112,8 +112,8 @@
             background: #ffb13d;
         }
 
-        /* دکمه صفر با عرض دو برابر */
-        .btn-zero {
+        /* دکمه‌های با عرض بیشتر */
+        .btn-wide {
             grid-column: span 2;
             border-radius: 50px;
             aspect-ratio: auto;
@@ -127,40 +127,42 @@
             <div class="display-text" id="display">0</div>
         </div>
         <div class="buttons" id="buttonsContainer">
-            <!-- ردیف اول: 0 (دو عرض), AC, √x, %, ÷ -->
-            <button class="btn btn-number btn-zero" data-value="0">0</button>
+            <!-- ردیف اول: 0, AC, √x, %, ÷ (5 ستون) -->
+            <button class="btn btn-number" data-value="0">0</button>
             <button class="btn btn-function" data-value="AC">AC</button>
             <button class="btn btn-function" data-value="√">√x</button>
             <button class="btn btn-function" data-value="%">%</button>
             <button class="btn btn-operator" data-value="÷">÷</button>
 
-            <!-- ردیف دوم: 7, 8, 9, × -->
+            <!-- ردیف دوم: 7, 8, 9, × (ستون ۵ خالی) -->
             <button class="btn btn-number" data-value="7">7</button>
             <button class="btn btn-number" data-value="8">8</button>
             <button class="btn btn-number" data-value="9">9</button>
             <button class="btn btn-operator" data-value="×">×</button>
+            <div></div> <!-- سلول خالی -->
 
             <!-- ردیف سوم: 4, 5, 6, − -->
             <button class="btn btn-number" data-value="4">4</button>
             <button class="btn btn-number" data-value="5">5</button>
             <button class="btn btn-number" data-value="6">6</button>
             <button class="btn btn-operator" data-value="−">−</button>
+            <div></div>
 
             <!-- ردیف چهارم: 1, 2, 3, + -->
             <button class="btn btn-number" data-value="1">1</button>
             <button class="btn btn-number" data-value="2">2</button>
             <button class="btn btn-number" data-value="3">3</button>
             <button class="btn btn-operator" data-value="+">+</button>
+            <div></div>
 
             <!-- ردیف پنجم: 0 (دو عرض), ., = -->
-            <button class="btn btn-number btn-zero" data-value="0">0</button>
+            <button class="btn btn-number btn-wide" data-value="0">0</button>
             <button class="btn btn-number" data-value=".">.</button>
-            <button class="btn btn-equals" data-value="=">=</button>
+            <button class="btn btn-equals btn-wide" data-value="=">=</button>
         </div>
     </div>
 
     <script>
-        // ─── ماشین حساب ───
         const display = document.getElementById('display');
         let currentInput = '0';
         let previousInput = '';
@@ -257,7 +259,7 @@
             updateDisplay();
         }
 
-        // ─── رویداد کلیک ───
+        // رویداد کلیک
         document.getElementById('buttonsContainer').addEventListener('click', (e) => {
             const btn = e.target.closest('.btn');
             if (!btn) return;
