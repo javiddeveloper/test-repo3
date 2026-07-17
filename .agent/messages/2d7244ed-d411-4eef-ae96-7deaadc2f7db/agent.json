@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "id": "1784328352562-3hfph",
+    "ts": 1784328352562,
+    "role": "system",
+    "text": "🩺 خطایی در «chat:product» رخ داد؛ ایجنت در حال بررسی…"
+  },
+  {
+    "id": "1784328354170-71f87",
+    "ts": 1784328354170,
+    "role": "agent",
+    "text": "agent: Not logged in · Please run /login"
+  },
+  {
+    "id": "1784328797264-w20qa",
+    "ts": 1784328797264,
+    "role": "system",
+    "text": "🩺 خطایی در «chat:product» رخ داد؛ ایجنت در حال بررسی…"
+  },
+  {
+    "id": "1784328798626-s0wxz",
+    "ts": 1784328798626,
+    "role": "agent",
+    "text": "agent: Not logged in · Please run /login"
+  },
+  {
+    "id": "1784329735611-v30jl",
+    "ts": 1784329735611,
+    "role": "system",
+    "text": "⏹️ متوقف شد"
+  },
+  {
+    "id": "1784331110398-uhrei",
+    "ts": 1784331110398,
+    "role": "user",
+    "text": "زززز"
+  }
+]
