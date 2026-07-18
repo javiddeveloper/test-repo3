@@ -1,3 +1,70 @@
 {
-  "cards": []
+  "cards": [
+    {
+      "id": "ce83b529ab5af49a659a274b",
+      "idList": "todo",
+      "name": "[frontend][boilerplate] ایجاد ساختار HTML اولیه ماشین حساب",
+      "desc": "فایل index.html با نمایشگر (display) و دکمه‌های AC, C, اعداد 0-9, عملگرها (+,-,*,/) و دکمه مساوی (=). استفاده از semantic HTML مانند button, div با role مناسب. حداقل یک container برای کل ماشین حساب.\n\n---\nrepo: /Users/javid/Documents/xxx/\nproject: calc",
+      "dateLastActivity": "2026-07-18T00:37:32.111Z",
+      "url": "",
+      "labels": [],
+      "comments": [],
+      "autoFailCount": 0
+    },
+    {
+      "id": "c806245bc64478546009a233",
+      "idList": "todo",
+      "name": "[frontend][boilerplate] استایل‌دهی کامل با CSS بر اساس Genesis Design System",
+      "desc": "رنگ‌ها: primary #6366F1 برای دکمه مساوی و عملگرها، secondary #20970B برای دکمه‌های AC/C. پس‌زمینه #FAFAFA، رنگ خنثی #9C9C9C. فونت‌ها: General Sans (bold, large) برای نمایشگر و DM Sans 15px برای دکمه‌ها. border-radius: 6px دکمه‌ها و 12px کانتینر. shadow ملایم روی کانتینر. تایپوگرافی و spacing با grid 4px.\n\n---\nrepo: /Users/javid/Documents/xxx/\nproject: calc",
+      "dateLastActivity": "2026-07-18T00:37:32.113Z",
+      "url": "",
+      "labels": [],
+      "comments": [],
+      "autoFailCount": 0
+    },
+    {
+      "id": "2f4cc85e627e588831bfa7ff",
+      "idList": "todo",
+      "name": "[frontend][medium] منطق اصلی ماشین حساب (جاوااسکریپت) + مدیریت خطا",
+      "desc": "پیاده‌سازی توابع جمع، تفریق، ضرب، تقسیم. تابع evaluate که رشته عبارت را پردازش کرده و نتیجه را برمی‌گرداند. خطای تقسیم بر صفر: نمایش 'Cannot divide by zero' یا 'Error'. ذخیره وضعیت فعلی (current input, previous value, operator). به‌روزرسانی display.\n\n---\nrepo: /Users/javid/Documents/xxx/\nproject: calc",
+      "dateLastActivity": "2026-07-18T00:37:32.114Z",
+      "url": "",
+      "labels": [],
+      "comments": [],
+      "autoFailCount": 0
+    },
+    {
+      "id": "67574b500280ab45cf19e49d",
+      "idList": "todo",
+      "name": "[frontend][boilerplate] اتصال دکمه‌ها به منطق (UI Interactions)",
+      "desc": "مدیریت رویدادهای کلیک روی دکمه‌ها (شامل event delegation). دکمه AC کل ماشین حساب را ریست می‌کند، دکمه C آخرین ورودی را پاک می‌کند (backspace). نمایشگر پس از هر action به‌روز شود.\n\n---\nrepo: /Users/javid/Documents/xxx/\nproject: calc",
+      "dateLastActivity": "2026-07-18T00:37:32.115Z",
+      "url": "",
+      "labels": [],
+      "comments": [],
+      "autoFailCount": 0
+    },
+    {
+      "id": "0cde8570faa9ba7606aecae3",
+      "idList": "todo",
+      "name": "[frontend][boilerplate] پشتیبانی از کیبورد (Keyboard Support)",
+      "desc": "رویداد keydown روی document: اعداد (0-9) عملگرها (+,-,*,/), Enter یا = برای مساوی، Backspace برای C، Escape برای AC. جلوگیری از رفتار پیش‌فرض مرورگر در Enter. هماهنگی با منطق موجود.\n\n---\nrepo: /Users/javid/Documents/xxx/\nproject: calc",
+      "dateLastActivity": "2026-07-18T00:37:32.116Z",
+      "url": "",
+      "labels": [],
+      "comments": [],
+      "autoFailCount": 0
+    },
+    {
+      "id": "96a13f6e0b67a140b1fc9878",
+      "idList": "todo",
+      "name": "[frontend][boilerplate] واکنش‌گرایی کامل (Responsive Design)",
+      "desc": "استفاده از media queries برای اندازه‌های موبایل (max-width: 480px), تبلت (max-width: 768px) و دسکتاپ. اطمینان از قابلیت استفاده با یک دست در موبایل (دکمه‌های با اندازه مناسب، فاصله‌گذاری). تست در viewportهای مختلف.\n\n---\nrepo: /Users/javid/Documents/xxx/\nproject: calc",
+      "dateLastActivity": "2026-07-18T00:37:32.117Z",
+      "url": "",
+      "labels": [],
+      "comments": [],
+      "autoFailCount": 0
+    }
+  ]
 }
