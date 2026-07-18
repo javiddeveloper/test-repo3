@@ -420,6 +420,159 @@ function handleKeyboard(e) {
     }
 }
 
+// ===================================================================
+//  Theme Switcher — Light / Dark mode with creative toggle
+// ===================================================================
+
+/** @type {'light'|'dark'} */
+let currentTheme = 'light';
+
+const themeToggle = document.getElementById('themeToggle');
+const themePanel = document.getElementById('themePanel');
+const themeOverlay = document.getElementById('themeOverlay');
+const themeSwitch = document.getElementById('themeSwitch');
+const labelLight = document.getElementById('labelLight');
+const labelDark = document.getElementById('labelDark');
+const knobIcon = document.getElementById('knobIcon');
+
+/**
+ * Apply a theme to the document.
+ * @param {'light'|'dark'} theme
+ */
+function applyTheme(theme) {
+    currentTheme = theme;
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('calc-theme', theme);
+
+    // Update knob icon
+    if (knobIcon) {
+        knobIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+    }
+
+    // Toggle dark class on switch
+    if (themeSwitch) {
+        themeSwitch.classList.toggle('theme-switch--dark', theme === 'dark');
+    }
+
+    // Update label active state
+    if (labelLight && labelDark) {
+        labelLight.classList.toggle('theme-switch__label--active', theme === 'light');
+        labelDark.classList.toggle('theme-switch__label--active', theme === 'dark');
+    }
+}
+
+/**
+ * Toggle between light and dark themes.
+ */
+function toggleTheme() {
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    applyTheme(newTheme);
+    closePanel();
+}
+
+/**
+ * Open the theme panel.
+ */
+function openPanel() {
+    if (!themePanel || !themeToggle || !themeOverlay) return;
+
+    themePanel.classList.add('theme-panel--open');
+    themeToggle.classList.add('theme-toggle--active');
+    themeOverlay.classList.add('theme-overlay--visible');
+    themeToggle.setAttribute('aria-label', 'Close theme settings');
+}
+
+/**
+ * Close the theme panel.
+ */
+function closePanel() {
+    if (!themePanel || !themeToggle || !themeOverlay) return;
+
+    themePanel.classList.remove('theme-panel--open');
+    themeToggle.classList.remove('theme-toggle--active');
+    themeOverlay.classList.remove('theme-overlay--visible');
+    themeToggle.setAttribute('aria-label', 'Open theme settings');
+}
+
+/**
+ * Toggle panel open/closed.
+ */
+function togglePanel() {
+    const isOpen = themePanel?.classList.contains('theme-panel--open');
+    if (isOpen) {
+        closePanel();
+    } else {
+        openPanel();
+    }
+}
+
+/** ---------- Init theme ---------- */
+
+function initTheme() {
+    // Check localStorage first, then system preference, default to light
+    const saved = localStorage.getItem('calc-theme');
+    if (saved === 'dark' || saved === 'light') {
+        applyTheme(saved);
+        return;
+    }
+
+    // Check system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        applyTheme('dark');
+    } else {
+        applyTheme('light');
+    }
+}
+
+/** ---------- Theme event listeners ---------- */
+
+function initThemeUI() {
+    initTheme();
+
+    // Gear toggle button
+    themeToggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePanel();
+    });
+
+    // Switch click toggles theme
+    themeSwitch?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleTheme();
+    });
+
+    // Keyboard support for switch (Enter/Space)
+    themeSwitch?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleTheme();
+        }
+    });
+
+    // Overlay click closes panel
+    themeOverlay?.addEventListener('click', () => {
+        closePanel();
+    });
+
+    // Close panel on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && themePanel?.classList.contains('theme-panel--open')) {
+            closePanel();
+        }
+    });
+
+    // Listen for system theme changes
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            // Only auto-switch if user hasn't manually saved a preference
+            if (!localStorage.getItem('calc-theme')) {
+                applyTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+    }
+}
+
 /** ---------- Init ---------- */
 
 function init() {
@@ -428,8 +581,8 @@ function init() {
         buttons.addEventListener('click', handleButtonClick);
     }
     document.addEventListener('keydown', handleKeyboard);
+    initThemeUI();
     updateDisplay();
 }
 
-// Script is placed at the end of <body>, so DOM is ready.
 init();

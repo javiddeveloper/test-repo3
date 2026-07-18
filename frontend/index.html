@@ -11,6 +11,28 @@
 </head>
 <body>
     <main class="calculator" role="application" aria-label="Calculator">
+        <!-- Theme switcher — creative toggle top-right -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Open theme settings" title="Theme settings">
+            <span class="theme-toggle__icon">⚙️</span>
+        </button>
+
+        <!-- Theme panel -->
+        <div class="theme-panel" id="themePanel" role="dialog" aria-label="Theme settings">
+            <div class="theme-panel__title">Appearance</div>
+            <div class="theme-switch" id="themeSwitch" role="button" tabindex="0" aria-label="Toggle dark mode">
+                <span class="theme-switch__label theme-switch__label--light" id="labelLight">☀️ Light</span>
+                <div class="theme-switch__track">
+                    <div class="theme-switch__knob">
+                        <span class="theme-switch__knob-icon" id="knobIcon">🌙</span>
+                    </div>
+                </div>
+                <span class="theme-switch__label theme-switch__label--dark" id="labelDark">🌙 Dark</span>
+            </div>
+        </div>
+
+        <!-- Overlay for click-outside -->
+        <div class="theme-overlay" id="themeOverlay"></div>
+
         <div class="display" role="status" aria-live="polite" aria-atomic="true">
             <span id="display-value" class="display__value">0</span>
         </div>

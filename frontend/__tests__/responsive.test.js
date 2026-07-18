@@ -68,8 +68,8 @@ describe('CSS — Responsive Properties', () => {
         expect(cssCode).toContain('prefers-reduced-motion: reduce');
     });
 
-    test('dark mode is optionally supported', () => {
-        expect(cssCode).toContain('prefers-color-scheme: dark');
+    test('dark mode is optionally supported via data-theme attribute', () => {
+        expect(cssCode).toContain('data-theme="dark"');
     });
 
     test('calculator container has border-radius: 12px (desktop)', () => {
@@ -158,9 +158,9 @@ describe('CSS — Visual Design System Compliance', () => {
 });
 
 describe('HTML — Button Grid Structure', () => {
-    test('has exactly 20 buttons (4×5 grid)', () => {
+    test('has exactly 21 buttons (20 calc + 1 theme toggle)', () => {
         const buttonMatches = htmlCode.match(/<button/g);
-        expect(buttonMatches).toHaveLength(20);
+        expect(buttonMatches).toHaveLength(21);
     });
 
     test('buttons are inside a grid container', () => {

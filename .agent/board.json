@@ -57,10 +57,10 @@
     },
     {
       "id": "96a13f6e0b67a140b1fc9878",
-      "idList": "prog",
+      "idList": "owner",
       "name": "[frontend][boilerplate] واکنش‌گرایی کامل (Responsive Design)",
       "desc": "استفاده از media queries برای اندازه‌های موبایل (max-width: 480px), تبلت (max-width: 768px) و دسکتاپ. اطمینان از قابلیت استفاده با یک دست در موبایل (دکمه‌های با اندازه مناسب، فاصله‌گذاری). تست در viewportهای مختلف.\n\n---\nrepo: /Users/javid/Documents/xxx/\nproject: calc",
-      "dateLastActivity": "2026-07-18T01:27:19.463Z",
+      "dateLastActivity": "2026-07-18T01:30:19.539Z",
       "url": "",
       "labels": [],
       "comments": [],
