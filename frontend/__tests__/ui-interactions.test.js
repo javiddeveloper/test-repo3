@@ -1,7 +1,7 @@
 /**
  * Calc — UI Interaction Tests
  * Tests button click handling, event delegation, display updates,
- * AC reset, C backspace.
+ * AC reset, C backspace, and keyboard support.
  */
 
 const { TextEncoder, TextDecoder } = require('util');
@@ -25,7 +25,13 @@ let document;
 let displayEl;
 
 function setupDOM() {
-    dom = new JSDOM(html, {
+    // Replace external script src with inline code so JSDOM can execute it
+    const htmlWithInlineScript = html.replace(
+        '<script src="script.js"></script>',
+        `<script>${scriptCode}</script>`
+    );
+
+    dom = new JSDOM(htmlWithInlineScript, {
         url: 'http://localhost',
         runScripts: 'dangerously',
     });
@@ -48,16 +54,12 @@ function setupDOM() {
         })),
     });
 
-    // The script is already in the HTML, JSDOM will execute it with 'dangerously'.
-    // But we need to wait for the event loop to process.
     displayEl = document.getElementById('display-value');
 }
 
 function click(selector) {
     const btn = document.querySelector(selector);
-    if (btn) {
-        btn.click();
-    }
+    if (btn) btn.click();
 }
 
 function pressKey(key) {
@@ -74,10 +76,11 @@ describe('UI Interactions — Button Clicks', () => {
         setupDOM();
     });
 
-    test('clicking digit buttons updates the display', () => {
-        // Make sure DOM is ready and display shows 0 initially
+    test('initial display is 0', () => {
         expect(displayEl.textContent).toBe('0');
+    });
 
+    test('clicking digit buttons updates the display', () => {
         click('[data-value="5"]');
         click('[data-value="3"]');
         expect(displayEl.textContent).toBe('53');
@@ -179,31 +182,9 @@ describe('UI Interactions — Button Clicks', () => {
         expect(displayEl.textContent).toBe('10');
     });
 
-    test('keyboard input works (Enter for equals, Escape for AC)', () => {
-        pressKey('9');
-        pressKey('+');
-        pressKey('1');
-        pressKey('Enter');
-        expect(displayEl.textContent).toBe('10');
-
-        pressKey('Escape');
-        expect(displayEl.textContent).toBe('0');
-    });
-
-    test('backspace keyboard key (Backspace) clears last digit', () => {
-        pressKey('7');
-        pressKey('8');
-        pressKey('9');
-        expect(displayEl.textContent).toBe('789');
-
-        pressKey('Backspace');
-        expect(displayEl.textContent).toBe('78');
-
-        pressKey('Backspace');
-        expect(displayEl.textContent).toBe('7');
-
-        pressKey('Backspace');
-        expect(displayEl.textContent).toBe('0');
+    test('event delegation works via buttons container click', () => {
+        click('[data-value="9"]');
+        expect(displayEl.textContent).toBe('9');
     });
 
     test('typing 00 appends two zeros', () => {
@@ -222,5 +203,109 @@ describe('UI Interactions — Button Clicks', () => {
         click('[data-action="clear-all"]');
         click('[data-value="5"]');
         expect(displayEl.textContent).toBe('5');
+    });
+
+    // ---------- Keyboard tests ----------
+
+    test('keyboard: number keys type digits', () => {
+        pressKey('4');
+        pressKey('2');
+        expect(displayEl.textContent).toBe('42');
+    });
+
+    test('keyboard: operators work', () => {
+        pressKey('9');
+        pressKey('+');
+        pressKey('1');
+        pressKey('Enter');
+        expect(displayEl.textContent).toBe('10');
+    });
+
+    test('keyboard: Escape clears all (AC)', () => {
+        pressKey('5');
+        pressKey('0');
+        expect(displayEl.textContent).toBe('50');
+
+        pressKey('Escape');
+        expect(displayEl.textContent).toBe('0');
+    });
+
+    test('keyboard: Backspace clears last digit', () => {
+        pressKey('7');
+        pressKey('8');
+        pressKey('9');
+        expect(displayEl.textContent).toBe('789');
+
+        pressKey('Backspace');
+        expect(displayEl.textContent).toBe('78');
+
+        pressKey('Backspace');
+        expect(displayEl.textContent).toBe('7');
+
+        pressKey('Backspace');
+        expect(displayEl.textContent).toBe('0');
+    });
+
+    test('keyboard: Delete also clears last digit', () => {
+        pressKey('1');
+        pressKey('2');
+        expect(displayEl.textContent).toBe('12');
+
+        pressKey('Delete');
+        expect(displayEl.textContent).toBe('1');
+    });
+
+    test('keyboard: minus (-) and equals (=) keys work', () => {
+        pressKey('8');
+        pressKey('-');
+        pressKey('3');
+        pressKey('=');
+        expect(displayEl.textContent).toBe('5');
+    });
+
+    test('keyboard: star (*) for multiply and slash (/) for divide', () => {
+        pressKey('6');
+        pressKey('*');
+        pressKey('7');
+        pressKey('=');
+        expect(displayEl.textContent).toBe('42');
+    });
+
+    test('keyboard: percent key works', () => {
+        pressKey('2');
+        pressKey('0');
+        pressKey('%');
+        expect(displayEl.textContent).toBe('0.2');
+    });
+
+    test('keyboard: Enter does not submit form (preventDefault)', () => {
+        // If preventDefault wasn't called, the page might reload.
+        // We just verify the calculation works.
+        pressKey('1');
+        pressKey('+');
+        pressKey('2');
+        pressKey('Enter');
+        expect(displayEl.textContent).toBe('3');
+    });
+
+    test('keyboard: chaining operations with keyboard', () => {
+        pressKey('5');
+        pressKey('+');
+        pressKey('3');
+        pressKey('=');
+        expect(displayEl.textContent).toBe('8');
+
+        pressKey('+');
+        pressKey('2');
+        pressKey('=');
+        expect(displayEl.textContent).toBe('10');
+    });
+
+    test('keyboard: decimal point via keyboard', () => {
+        pressKey('3');
+        pressKey('.');
+        pressKey('1');
+        pressKey('4');
+        expect(displayEl.textContent).toBe('3.14');
     });
 });

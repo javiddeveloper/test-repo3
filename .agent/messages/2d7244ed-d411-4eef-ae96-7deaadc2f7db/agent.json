@@ -300,5 +300,29 @@
     "ts": 1784337778383,
     "role": "agent",
     "text": "🚀 اجرای تسک «[frontend][boilerplate] اتصال دکمه‌ها به منطق (UI Interactions)» روی /Users/javid/Documents/xxx/ (لوکال، بدون کلون)…"
+  },
+  {
+    "id": "1784337935297-5aw68",
+    "ts": 1784337935297,
+    "role": "agent",
+    "text": "✅ اعمال شد (پروژه‌ی محلی، بدون PR) و رفت برای ریویو: [frontend][boilerplate] اتصال دکمه‌ها به منطق (UI Interactions)\n⬆️ push شد.\nفایل‌ها: 5"
+  },
+  {
+    "id": "1784337939404-oqrgn",
+    "ts": 1784337939404,
+    "role": "agent",
+    "text": "🏗️ Tech Lead در حال ریویوی «[frontend][boilerplate] اتصال دکمه‌ها به منطق (UI Interactions)»…"
+  },
+  {
+    "id": "1784337939407-jxt79",
+    "ts": 1784337939407,
+    "role": "agent",
+    "text": "⚠️ پروژه‌ی آفلاین: PR باز روی این کارت پیدا نشد. تسک مستقیما به مرحله انجام‌شده (Done) منتقل شد."
+  },
+  {
+    "id": "1784337958389-9x12k",
+    "ts": 1784337958389,
+    "role": "agent",
+    "text": "🚀 اجرای تسک «[frontend][boilerplate] پشتیبانی از کیبورد (Keyboard Support)» روی /Users/javid/Documents/xxx/ (لوکال، بدون کلون)…"
   }
 ]
