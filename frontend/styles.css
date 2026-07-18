@@ -1,6 +1,7 @@
 /* ========================================
    Calc — Simple Calculator Styles
    Design System: Genesis-based
+   Fully responsive: mobile, tablet, desktop
    ======================================== */
 
 /* --- Reset & Base --- */
@@ -20,12 +21,13 @@ html {
 
 body {
     min-height: 100vh;
+    min-height: 100dvh; /* dynamic viewport height for mobile */
     display: flex;
     justify-content: center;
     align-items: center;
     background: #FAFAFA;
     font-family: 'DM Sans', 'Segoe UI', sans-serif;
-    padding: 16px;
+    padding: 12px;
 }
 
 /* --- Calculator Container --- */
@@ -34,7 +36,7 @@ body {
     max-width: 100%;
     background: #ffffff;
     border-radius: 12px;
-    padding: 24px;
+    padding: 20px;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
@@ -42,9 +44,9 @@ body {
 .display {
     background: #f5f5f5;
     border-radius: 6px;
-    padding: 16px 20px;
-    margin-bottom: 20px;
-    min-height: 72px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    min-height: 64px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -54,7 +56,7 @@ body {
 .display__value {
     color: #1a1a1a;
     font-family: 'General Sans', 'Segoe UI', sans-serif;
-    font-size: 38px;
+    font-size: 32px;
     font-weight: 700;
     letter-spacing: -0.5px;
     overflow: hidden;
@@ -68,7 +70,7 @@ body {
 .buttons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px; /* 2 × 4px grid */
+    gap: 8px;
 }
 
 /* --- Button Base --- */
@@ -87,6 +89,7 @@ body {
     user-select: none;
     outline: none;
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation; /* faster tap response on mobile */
 }
 
 .btn:active {
@@ -104,11 +107,9 @@ body {
     background: #f0f0f0;
     color: #1a1a1a;
 }
-
 .btn--number:hover {
     background: #e4e4e4;
 }
-
 .btn--number:active {
     background: #d6d6d6;
 }
@@ -118,11 +119,9 @@ body {
     background: #6366F1;
     color: #ffffff;
 }
-
 .btn--operator:hover {
     background: #5254db;
 }
-
 .btn--operator:active {
     background: #4547c7;
 }
@@ -133,11 +132,9 @@ body {
     color: #ffffff;
     font-weight: 600;
 }
-
 .btn--primary:hover {
     background: #5254db;
 }
-
 .btn--primary:active {
     background: #4547c7;
 }
@@ -148,11 +145,9 @@ body {
     color: #ffffff;
     font-weight: 600;
 }
-
 .btn--secondary:hover {
     background: #1d870a;
 }
-
 .btn--secondary:active {
     background: #1a7809;
 }
@@ -162,35 +157,47 @@ body {
     background: #f0f0f0;
     color: #9C9C9C;
 }
-
 .btn--neutral:hover {
     background: #e4e4e4;
     color: #7a7a7a;
 }
-
 .btn--neutral:active {
     background: #d6d6d6;
 }
 
-/* --- Responsive --- */
-@media (max-width: 400px) {
+/* ========================================
+   Responsive Design — Mobile First
+   ======================================== */
+
+/* --- Mobile (≤ 480px) --- */
+/* Base styles already tuned for mobile; this refines for tiny screens */
+@media (max-width: 480px) {
+    body {
+        padding: 8px;
+        align-items: flex-start;   /* start from top on very small screens */
+        padding-top: 24px;
+    }
+
     .calculator {
         padding: 16px;
         border-radius: 10px;
+        width: 100%;              /* fill the screen */
     }
 
     .display {
-        padding: 12px 16px;
-        min-height: 60px;
+        padding: 12px 14px;
+        min-height: 56px;
+        margin-bottom: 12px;
     }
 
     .display__value {
-        font-size: 30px;
+        font-size: 28px;
     }
 
     .btn {
-        height: 48px;
+        height: 52px;
         font-size: 14px;
+        border-radius: 6px;
     }
 
     .buttons {
@@ -198,10 +205,58 @@ body {
     }
 }
 
-@media (min-width: 768px) {
+/* --- Small Mobile (≤ 360px) --- */
+@media (max-width: 360px) {
+    body {
+        padding: 4px;
+        padding-top: 16px;
+    }
+
     .calculator {
-        width: 380px;
-        padding: 28px;
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .display {
+        padding: 10px 12px;
+        min-height: 48px;
+        margin-bottom: 10px;
+    }
+
+    .display__value {
+        font-size: 24px;
+    }
+
+    .btn {
+        height: 46px;
+        font-size: 13px;
+        border-radius: 5px;
+    }
+
+    .buttons {
+        gap: 4px;
+    }
+}
+
+/* --- Tablet (481px – 768px) --- */
+@media (min-width: 481px) and (max-width: 768px) {
+    body {
+        padding: 24px;
+    }
+
+    .calculator {
+        width: 400px;
+        padding: 24px;
+    }
+
+    .display {
+        padding: 16px 20px;
+        min-height: 72px;
+        margin-bottom: 18px;
+    }
+
+    .display__value {
+        font-size: 36px;
     }
 
     .btn {
@@ -209,7 +264,110 @@ body {
         font-size: 16px;
     }
 
+    .buttons {
+        gap: 10px;
+    }
+}
+
+/* --- Desktop (> 768px) --- */
+@media (min-width: 769px) {
+    body {
+        padding: 32px;
+    }
+
+    .calculator {
+        width: 380px;
+        padding: 28px;
+        border-radius: 14px;
+    }
+
+    .display {
+        padding: 18px 22px;
+        min-height: 80px;
+        margin-bottom: 20px;
+    }
+
     .display__value {
-        font-size: 44px;
+        font-size: 42px;
+    }
+
+    .btn {
+        height: 64px;
+        font-size: 17px;
+        border-radius: 7px;
+    }
+
+    .buttons {
+        gap: 10px;
+    }
+}
+
+/* --- Large Desktop (> 1200px) --- */
+@media (min-width: 1200px) {
+    .calculator {
+        width: 420px;
+        padding: 32px;
+    }
+
+    .display__value {
+        font-size: 48px;
+    }
+
+    .btn {
+        height: 70px;
+        font-size: 18px;
+    }
+}
+
+/* --- Reduced motion preference --- */
+@media (prefers-reduced-motion: reduce) {
+    .btn {
+        transition: none;
+    }
+    .display__value {
+        transition: none;
+    }
+}
+
+/* --- Dark mode support (optional enhancement) --- */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #1a1a1a;
+    }
+
+    .calculator {
+        background: #2a2a2a;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .display {
+        background: #1e1e1e;
+    }
+
+    .display__value {
+        color: #e0e0e0;
+    }
+
+    .btn--number {
+        background: #3a3a3a;
+        color: #e0e0e0;
+    }
+    .btn--number:hover {
+        background: #4a4a4a;
+    }
+    .btn--number:active {
+        background: #555;
+    }
+
+    .btn--neutral {
+        background: #3a3a3a;
+        color: #9C9C9C;
+    }
+    .btn--neutral:hover {
+        background: #4a4a4a;
+        color: #bbb;
+    }
+    .btn--neutral:active {
+        background: #555;
     }
 }
