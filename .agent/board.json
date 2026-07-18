@@ -2,10 +2,10 @@
   "cards": [
     {
       "id": "ce83b529ab5af49a659a274b",
-      "idList": "prog",
+      "idList": "owner",
       "name": "[frontend][boilerplate] ایجاد ساختار HTML اولیه ماشین حساب",
       "desc": "فایل index.html با نمایشگر (display) و دکمه‌های AC, C, اعداد 0-9, عملگرها (+,-,*,/) و دکمه مساوی (=). استفاده از semantic HTML مانند button, div با role مناسب. حداقل یک container برای کل ماشین حساب.\n\n---\nrepo: /Users/javid/Documents/xxx/\nproject: calc",
-      "dateLastActivity": "2026-07-18T01:16:59.403Z",
+      "dateLastActivity": "2026-07-18T01:19:38.427Z",
       "url": "",
       "labels": [],
       "comments": [],
@@ -13,10 +13,10 @@
     },
     {
       "id": "c806245bc64478546009a233",
-      "idList": "todo",
+      "idList": "prog",
       "name": "[frontend][boilerplate] استایل‌دهی کامل با CSS بر اساس Genesis Design System",
       "desc": "رنگ‌ها: primary #6366F1 برای دکمه مساوی و عملگرها، secondary #20970B برای دکمه‌های AC/C. پس‌زمینه #FAFAFA، رنگ خنثی #9C9C9C. فونت‌ها: General Sans (bold, large) برای نمایشگر و DM Sans 15px برای دکمه‌ها. border-radius: 6px دکمه‌ها و 12px کانتینر. shadow ملایم روی کانتینر. تایپوگرافی و spacing با grid 4px.\n\n---\nrepo: /Users/javid/Documents/xxx/\nproject: calc",
-      "dateLastActivity": "2026-07-18T00:37:32.113Z",
+      "dateLastActivity": "2026-07-18T01:19:59.409Z",
       "url": "",
       "labels": [],
       "comments": [],

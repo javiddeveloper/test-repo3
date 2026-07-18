@@ -228,5 +228,29 @@
     "ts": 1784337419418,
     "role": "agent",
     "text": "🚀 اجرای تسک «[frontend][boilerplate] ایجاد ساختار HTML اولیه ماشین حساب» روی /Users/javid/Documents/xxx/ (لوکال، بدون کلون)…"
+  },
+  {
+    "id": "1784337573634-kmb64",
+    "ts": 1784337573634,
+    "role": "agent",
+    "text": "✅ اعمال شد (پروژه‌ی محلی، بدون PR) و رفت برای ریویو: [frontend][boilerplate] ایجاد ساختار HTML اولیه ماشین حساب\n⬆️ push شد.\nفایل‌ها: 5672"
+  },
+  {
+    "id": "1784337578421-d46y7",
+    "ts": 1784337578421,
+    "role": "agent",
+    "text": "🏗️ Tech Lead در حال ریویوی «[frontend][boilerplate] ایجاد ساختار HTML اولیه ماشین حساب»…"
+  },
+  {
+    "id": "1784337578425-athx8",
+    "ts": 1784337578425,
+    "role": "agent",
+    "text": "⚠️ پروژه‌ی آفلاین: PR باز روی این کارت پیدا نشد. تسک مستقیما به مرحله انجام‌شده (Done) منتقل شد."
+  },
+  {
+    "id": "1784337599427-mw4oe",
+    "ts": 1784337599427,
+    "role": "agent",
+    "text": "🚀 اجرای تسک «[frontend][boilerplate] استایل‌دهی کامل با CSS بر اساس Genesis Design System» روی /Users/javid/Documents/xxx/ (لوکال، بدون کلون)…"
   }
 ]

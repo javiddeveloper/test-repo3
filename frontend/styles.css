@@ -35,13 +35,13 @@ body {
     background: #ffffff;
     border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 /* --- Display --- */
 .display {
     background: #f5f5f5;
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 16px 20px;
     margin-bottom: 20px;
     min-height: 72px;
@@ -54,7 +54,7 @@ body {
 .display__value {
     color: #1a1a1a;
     font-family: 'General Sans', 'Segoe UI', sans-serif;
-    font-size: 36px;
+    font-size: 38px;
     font-weight: 700;
     letter-spacing: -0.5px;
     overflow: hidden;
@@ -68,7 +68,7 @@ body {
 .buttons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    gap: 8px; /* 2 × 4px grid */
 }
 
 /* --- Button Base --- */
@@ -77,7 +77,7 @@ body {
     border: none;
     border-radius: 6px;
     font-family: 'DM Sans', 'Segoe UI', sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
     cursor: pointer;
     transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
@@ -113,21 +113,21 @@ body {
     background: #d6d6d6;
 }
 
-/* Operators */
+/* Operators — Primary color #6366F1 */
 .btn--operator {
-    background: #e8eaff;
-    color: #6366F1;
+    background: #6366F1;
+    color: #ffffff;
 }
 
 .btn--operator:hover {
-    background: #d4d6fc;
+    background: #5254db;
 }
 
 .btn--operator:active {
-    background: #bfc2f8;
+    background: #4547c7;
 }
 
-/* Primary (equals) */
+/* Primary (equals) — Primary color #6366F1 */
 .btn--primary {
     background: #6366F1;
     color: #ffffff;
@@ -142,22 +142,22 @@ body {
     background: #4547c7;
 }
 
-/* Secondary (AC, C) */
+/* Secondary (AC, C) — #20970B */
 .btn--secondary {
-    background: #e6f7e6;
-    color: #20970B;
+    background: #20970B;
+    color: #ffffff;
     font-weight: 600;
 }
 
 .btn--secondary:hover {
-    background: #d0f0d0;
+    background: #1d870a;
 }
 
 .btn--secondary:active {
-    background: #b8e8b8;
+    background: #1a7809;
 }
 
-/* Neutral (percent, etc.) */
+/* Neutral (percent) — #9C9C9C text, light bg */
 .btn--neutral {
     background: #f0f0f0;
     color: #9C9C9C;
@@ -170,11 +170,6 @@ body {
 
 .btn--neutral:active {
     background: #d6d6d6;
-}
-
-/* Special: zero spans slightly wider visually */
-.btn--zero {
-    /* no extra span, just visual consistency */
 }
 
 /* --- Responsive --- */
@@ -190,16 +185,16 @@ body {
     }
 
     .display__value {
-        font-size: 28px;
+        font-size: 30px;
     }
 
     .btn {
         height: 48px;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .buttons {
-        gap: 8px;
+        gap: 6px;
     }
 }
 
@@ -211,10 +206,10 @@ body {
 
     .btn {
         height: 60px;
-        font-size: 20px;
+        font-size: 16px;
     }
 
     .display__value {
-        font-size: 42px;
+        font-size: 44px;
     }
 }
