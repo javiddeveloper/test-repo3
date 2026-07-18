@@ -1,0 +1,19 @@
+{
+    "name": "province-city-selector",
+    "private": true,
+    "scripts": {
+        "start": "npx http-server . -p 8080 -c-1",
+        "build": "echo 'Static site — no build step required.'",
+        "test": "jest"
+    },
+    "devDependencies": {
+        "jest": "^30.4.2",
+        "jest-environment-jsdom": "^30.4.1"
+    },
+    "jest": {
+        "testEnvironment": "jsdom",
+        "testMatch": [
+            "**/*.spec.js"
+        ]
+    }
+}
