@@ -7,12 +7,17 @@
 
 /**
  * @typedef {Object} CalcState
- * @property {string} displayText
- * @property {string} currentInput
- * @property {string} previousInput
- * @property {Operator} operator
- * @property {boolean} shouldReset
+ * @property {string} displayText   - what is shown on the display
+ * @property {string} currentInput  - the current operand being typed
+ * @property {string} previousInput - the first operand before operator
+ * @property {Operator} operator    - the pending operator
+ * @property {boolean} shouldReset  - whether next digit should reset currentInput
  */
+
+/** ---------- Constants ---------- */
+
+const ERROR_DISPLAY = 'Error';
+const MAX_INPUT_LENGTH = 16;
 
 /** ---------- State ---------- */
 
@@ -29,41 +34,12 @@ const state = {
 
 const displayEl = document.getElementById('display-value');
 
-/** ---------- Pure functions ---------- */
+// ---------------------------------------------------------------------------
+//  Pure arithmetic helpers
+// ---------------------------------------------------------------------------
 
 /**
- * Format a number string for display (avoid floating point noise).
- * @param {string} str
- * @returns {string}
- */
-function sanitizeDisplay(str) {
-    if (str === 'Error' || str === 'Infinity' || str === '-Infinity') {
-        return 'Error';
-    }
-    // Remove trailing zeros after decimal for cleaner display
-    let parts = str.split('.');
-    if (parts.length === 2) {
-        parts[1] = parts[1].replace(/0+$/, '');
-        if (parts[1] === '') {
-            return parts[0];
-        }
-        return parts.join('.');
-    }
-    return str;
-}
-
-/**
- * Check if a string is a valid number.
- * @param {string} str
- * @returns {boolean}
- */
-function isValidNumber(str) {
-    if (str === '' || str === '.' || str === '-') return false;
-    return !isNaN(Number(str)) && isFinite(Number(str));
-}
-
-/**
- * Add two numbers as strings.
+ * Add two numbers given as strings.
  * @param {string} a
  * @param {string} b
  * @returns {string}
@@ -106,17 +82,43 @@ function divide(a, b) {
     return String(Number(a) / divisor);
 }
 
+/** ---------- Display helpers ---------- */
+
 /**
- * Calculate percentage of current input.
- * @param {string} value
- * @returns {string}
+ * Check if a string is a valid finite number.
+ * @param {string} str
+ * @returns {boolean}
  */
-function percent(value) {
-    return String(Number(value) / 100);
+function isValidNumber(str) {
+    if (str === '' || str === '.' || str === '-') return false;
+    return !isNaN(Number(str)) && isFinite(Number(str));
 }
 
 /**
- * Compute result based on operator.
+ * Clean up a result string for display — remove trailing zeros,
+ * handle Infinity / Error.
+ * @param {string} str
+ * @returns {string}
+ */
+function sanitizeDisplay(str) {
+    if (str === 'Error' || str === 'Infinity' || str === '-Infinity') {
+        return 'Error';
+    }
+    const parts = str.split('.');
+    if (parts.length === 2) {
+        parts[1] = parts[1].replace(/0+$/, '');
+        if (parts[1] === '') {
+            return parts[0];
+        }
+        return parts.join('.');
+    }
+    return str;
+}
+
+/** ---------- Core compute ---------- */
+
+/**
+ * Compute result of (a op b).
  * @param {string} a
  * @param {Operator} op
  * @param {string} b
@@ -132,10 +134,79 @@ function compute(a, op, b) {
     }
 }
 
+/** ---------- Expression evaluator ---------- */
+
+/**
+ * Token -> operator map
+ * @type {Record<string, Operator>}
+ */
+const OPERATOR_MAP = {
+    '+': 'add',
+    '-': 'subtract',
+    '*': 'multiply',
+    '/': 'divide',
+};
+
+/**
+ * Evaluate a simple arithmetic expression string (e.g. "12+34").
+ * Only supports one operator at a time.
+ * Returns the result as a string, or 'Error' on invalid input / division by zero.
+ *
+ * @param {string} expr  — expression like "3+4", "10/0"
+ * @returns {string}
+ */
+function evaluate(expr) {
+    if (typeof expr !== 'string') {
+        return 'Error';
+    }
+    const trimmed = expr.trim();
+    if (trimmed === '') {
+        return 'Error';
+    }
+
+    // Find the operator position (only the first occurrence)
+    const operators = ['+', '-', '*', '/'];
+    let opIndex = -1;
+    let foundOp = '';
+
+    for (const op of operators) {
+        const idx = trimmed.indexOf(op);
+        if (idx > 0) { // must not be at position 0 (negative sign is not supported as unary)
+            if (opIndex === -1 || idx < opIndex) {
+                opIndex = idx;
+                foundOp = op;
+            }
+        }
+    }
+
+    if (opIndex === -1) {
+        // Single number — just validate and return
+        return isValidNumber(trimmed) ? sanitizeDisplay(trimmed) : 'Error';
+    }
+
+    const left = trimmed.slice(0, opIndex).trim();
+    const right = trimmed.slice(opIndex + 1).trim();
+
+    if (!isValidNumber(left) || !isValidNumber(right)) {
+        return 'Error';
+    }
+
+    const operator = OPERATOR_MAP[foundOp];
+    const result = compute(left, operator, right);
+
+    if (result === 'Error') {
+        return 'Error';
+    }
+
+    return sanitizeDisplay(result);
+}
+
 /** ---------- State mutations ---------- */
 
 function updateDisplay() {
-    displayEl.textContent = state.displayText;
+    if (displayEl) {
+        displayEl.textContent = state.displayText;
+    }
 }
 
 function resetState() {
@@ -166,20 +237,17 @@ function inputDigit(value) {
     }
 
     if (value === '.') {
-        // Prevent multiple decimals
         if (state.currentInput.includes('.')) {
             return false;
         }
         state.currentInput += '.';
     } else {
-        // Leading zero handling
         if (state.currentInput === '0' && value !== '00') {
             state.currentInput = value;
         } else {
             state.currentInput += value;
-            // Limit input length
-            if (state.currentInput.length > 16) {
-                state.currentInput = state.currentInput.slice(0, 16);
+            if (state.currentInput.length > MAX_INPUT_LENGTH) {
+                state.currentInput = state.currentInput.slice(0, MAX_INPUT_LENGTH);
             }
         }
     }
@@ -190,18 +258,17 @@ function inputDigit(value) {
 }
 
 /**
- * Handle operator press.
+ * Handle operator press — stores current value and operator.
+ * If there's a pending operation, chains it first.
  * @param {Operator} op
  */
 function inputOperator(op) {
     const curr = state.currentInput;
-
     if (!isValidNumber(curr)) {
         return;
     }
 
     if (state.operator && !state.shouldReset) {
-        // Chain calculation
         const result = compute(state.previousInput, state.operator, curr);
         if (result === 'Error') {
             state.displayText = 'Error';
@@ -223,7 +290,7 @@ function inputOperator(op) {
 }
 
 /**
- * Execute equals: compute final result.
+ * Execute equals — compute final result.
  */
 function inputEquals() {
     if (!state.operator) {
@@ -259,7 +326,7 @@ function inputPercent() {
     if (!isValidNumber(curr)) {
         return;
     }
-    const result = percent(curr);
+    const result = String(Number(curr) / 100);
     state.currentInput = result;
     state.displayText = sanitizeDisplay(result);
     state.shouldReset = true;
@@ -276,7 +343,6 @@ function handleButtonClick(e) {
     const btn = e.target.closest('.btn');
     if (!btn) return;
 
-    // Number input
     if (btn.dataset.value !== undefined) {
         inputDigit(btn.dataset.value);
         return;
@@ -322,13 +388,11 @@ function handleKeyboard(e) {
 
     e.preventDefault();
 
-    // If it's a digit or decimal
     if (['0','1','2','3','4','5','6','7','8','9','.'].includes(mapped)) {
         inputDigit(mapped);
         return;
     }
 
-    // Actions
     switch (mapped) {
         case 'clear-all':    resetState(); break;
         case 'clear':        clearLastEntry(); break;

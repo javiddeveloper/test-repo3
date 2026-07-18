@@ -1,29 +1,12 @@
 /**
  * Calc — Unit Tests
  * Tests the pure calculator logic functions.
+ * Every test follows Arrange / Act / Assert.
  */
 
-// ---------- Pure function implementations (same as script.js) ----------
-
-function sanitizeDisplay(str) {
-    if (str === 'Error' || str === 'Infinity' || str === '-Infinity') {
-        return 'Error';
-    }
-    let parts = str.split('.');
-    if (parts.length === 2) {
-        parts[1] = parts[1].replace(/0+$/, '');
-        if (parts[1] === '') {
-            return parts[0];
-        }
-        return parts.join('.');
-    }
-    return str;
-}
-
-function isValidNumber(str) {
-    if (str === '' || str === '.' || str === '-') return false;
-    return !isNaN(Number(str)) && isFinite(Number(str));
-}
+// ---------------------------------------------------------------------------
+//  Pure function implementations (duplicated from script.js for test isolation)
+// ---------------------------------------------------------------------------
 
 function add(a, b) {
     return String(Number(a) + Number(b));
@@ -45,8 +28,24 @@ function divide(a, b) {
     return String(Number(a) / divisor);
 }
 
-function percent(value) {
-    return String(Number(value) / 100);
+function isValidNumber(str) {
+    if (str === '' || str === '.' || str === '-') return false;
+    return !isNaN(Number(str)) && isFinite(Number(str));
+}
+
+function sanitizeDisplay(str) {
+    if (str === 'Error' || str === 'Infinity' || str === '-Infinity') {
+        return 'Error';
+    }
+    const parts = str.split('.');
+    if (parts.length === 2) {
+        parts[1] = parts[1].replace(/0+$/, '');
+        if (parts[1] === '') {
+            return parts[0];
+        }
+        return parts.join('.');
+    }
+    return str;
 }
 
 function compute(a, op, b) {
@@ -59,151 +58,399 @@ function compute(a, op, b) {
     }
 }
 
-// ---------- Tests ----------
+const OPERATOR_MAP = {
+    '+': 'add',
+    '-': 'subtract',
+    '*': 'multiply',
+    '/': 'divide',
+};
 
-describe('sanitizeDisplay', () => {
-    test('removes trailing zeros after decimal point', () => {
-        const input = '4.5000';
-        const result = sanitizeDisplay(input);
-        expect(result).toBe('4.5');
+function evaluate(expr) {
+    if (typeof expr !== 'string') {
+        return 'Error';
+    }
+    const trimmed = expr.trim();
+    if (trimmed === '') {
+        return 'Error';
+    }
+
+    const operators = ['+', '-', '*', '/'];
+    let opIndex = -1;
+    let foundOp = '';
+
+    for (const op of operators) {
+        const idx = trimmed.indexOf(op);
+        if (idx > 0) {
+            if (opIndex === -1 || idx < opIndex) {
+                opIndex = idx;
+                foundOp = op;
+            }
+        }
+    }
+
+    if (opIndex === -1) {
+        return isValidNumber(trimmed) ? sanitizeDisplay(trimmed) : 'Error';
+    }
+
+    const left = trimmed.slice(0, opIndex).trim();
+    const right = trimmed.slice(opIndex + 1).trim();
+
+    if (!isValidNumber(left) || !isValidNumber(right)) {
+        return 'Error';
+    }
+
+    const operator = OPERATOR_MAP[foundOp];
+    const result = compute(left, operator, right);
+
+    if (result === 'Error') {
+        return 'Error';
+    }
+
+    return sanitizeDisplay(result);
+}
+
+// ===========================================================================
+//  Tests
+// ===========================================================================
+
+describe('add', () => {
+    test('adds two positive integers', () => {
+        // Arrange
+        const a = '10', b = '5';
+        // Act
+        const result = add(a, b);
+        // Assert
+        expect(result).toBe('15');
     });
 
-    test('removes decimal point if nothing after it', () => {
-        const input = '8.0';
-        const result = sanitizeDisplay(input);
-        expect(result).toBe('8');
+    test('adds a positive and a negative number', () => {
+        const result = add('-8', '3');
+        expect(result).toBe('-5');
     });
 
-    test('returns Error for error strings', () => {
-        const input = 'Error';
-        const result = sanitizeDisplay(input);
+    test('adds two decimals', () => {
+        const result = add('0.1', '0.2');
+        expect(Number(result)).toBeCloseTo(0.3, 10);
+    });
+});
+
+describe('subtract', () => {
+    test('subtracts two positive integers', () => {
+        const result = subtract('10', '3');
+        expect(result).toBe('7');
+    });
+
+    test('subtracts resulting in negative', () => {
+        const result = subtract('3', '10');
+        expect(result).toBe('-7');
+    });
+
+    test('subtracts with decimal result', () => {
+        const result = subtract('5.5', '2.2');
+        expect(Number(result)).toBeCloseTo(3.3, 10);
+    });
+});
+
+describe('multiply', () => {
+    test('multiplies two positive integers', () => {
+        const result = multiply('7', '8');
+        expect(result).toBe('56');
+    });
+
+    test('multiplies by zero', () => {
+        const result = multiply('99', '0');
+        expect(result).toBe('0');
+    });
+
+    test('multiplies negative numbers (product positive)', () => {
+        const result = multiply('-4', '-3');
+        expect(result).toBe('12');
+    });
+
+    test('multiplies negative by positive (product negative)', () => {
+        const result = multiply('-4', '3');
+        expect(result).toBe('-12');
+    });
+});
+
+describe('divide', () => {
+    test('divides two integers evenly', () => {
+        const result = divide('20', '4');
+        expect(result).toBe('5');
+    });
+
+    test('divides with decimal result', () => {
+        const result = divide('10', '3');
+        expect(Number(result)).toBeCloseTo(3.3333333333333335, 10);
+    });
+
+    test('returns Error for division by zero', () => {
+        const result = divide('10', '0');
         expect(result).toBe('Error');
     });
 
-    test('returns Error for infinity', () => {
-        const input = 'Infinity';
-        const result = sanitizeDisplay(input);
+    test('returns Error for zero divided by zero', () => {
+        const result = divide('0', '0');
         expect(result).toBe('Error');
     });
 
-    test('returns integer as-is', () => {
-        const input = '42';
-        const result = sanitizeDisplay(input);
-        expect(result).toBe('42');
+    test('divides zero by non-zero', () => {
+        const result = divide('0', '5');
+        expect(result).toBe('0');
     });
 
-    test('handles negative decimal without trailing zeros', () => {
-        const input = '-3.14000';
-        const result = sanitizeDisplay(input);
-        expect(result).toBe('-3.14');
+    test('divides negative by positive', () => {
+        const result = divide('-15', '3');
+        expect(result).toBe('-5');
     });
 });
 
 describe('isValidNumber', () => {
-    test('returns true for a normal number string', () => {
-        const input = '42.5';
-        const result = isValidNumber(input);
-        expect(result).toBe(true);
+    test('returns true for normal integer', () => {
+        expect(isValidNumber('42')).toBe(true);
     });
 
-    test('returns false for empty string', () => {
-        const input = '';
-        const result = isValidNumber(input);
-        expect(result).toBe(false);
+    test('returns true for decimal', () => {
+        expect(isValidNumber('3.14')).toBe(true);
     });
 
-    test('returns false for lone decimal point', () => {
-        const input = '.';
-        const result = isValidNumber(input);
-        expect(result).toBe(false);
-    });
-
-    test('returns false for non-numeric text', () => {
-        const input = 'abc';
-        const result = isValidNumber(input);
-        expect(result).toBe(false);
+    test('returns true for negative number', () => {
+        expect(isValidNumber('-7')).toBe(true);
     });
 
     test('returns true for zero', () => {
-        const input = '0';
-        const result = isValidNumber(input);
-        expect(result).toBe(true);
+        expect(isValidNumber('0')).toBe(true);
+    });
+
+    test('returns false for empty string', () => {
+        expect(isValidNumber('')).toBe(false);
+    });
+
+    test('returns false for lone decimal point', () => {
+        expect(isValidNumber('.')).toBe(false);
+    });
+
+    test('returns false for lone minus sign', () => {
+        expect(isValidNumber('-')).toBe(false);
+    });
+
+    test('returns false for non-numeric text', () => {
+        expect(isValidNumber('abc')).toBe(false);
+    });
+
+    test('returns false for NaN', () => {
+        expect(isValidNumber('NaN')).toBe(false);
+    });
+
+    test('returns false for Infinity', () => {
+        expect(isValidNumber('Infinity')).toBe(false);
+    });
+});
+
+describe('sanitizeDisplay', () => {
+    test('removes trailing zeros after decimal point', () => {
+        const result = sanitizeDisplay('4.5000');
+        expect(result).toBe('4.5');
+    });
+
+    test('removes decimal point if nothing after it', () => {
+        const result = sanitizeDisplay('8.0');
+        expect(result).toBe('8');
+    });
+
+    test('returns Error for error string', () => {
+        const result = sanitizeDisplay('Error');
+        expect(result).toBe('Error');
+    });
+
+    test('returns Error for Infinity', () => {
+        const result = sanitizeDisplay('Infinity');
+        expect(result).toBe('Error');
+    });
+
+    test('returns Error for -Infinity', () => {
+        const result = sanitizeDisplay('-Infinity');
+        expect(result).toBe('Error');
+    });
+
+    test('returns integer as-is', () => {
+        const result = sanitizeDisplay('42');
+        expect(result).toBe('42');
+    });
+
+    test('handles negative decimal without trailing zeros', () => {
+        const result = sanitizeDisplay('-3.14000');
+        expect(result).toBe('-3.14');
+    });
+
+    test('preserves decimal when trailing zeros are meaningful', () => {
+        const result = sanitizeDisplay('2.5001');
+        expect(result).toBe('2.5001');
     });
 });
 
 describe('compute', () => {
-    test('adds two numbers', () => {
-        const a = '10', b = '5';
-        const result = compute(a, 'add', b);
+    test('adds via compute', () => {
+        const result = compute('10', 'add', '5');
         expect(result).toBe('15');
     });
 
-    test('subtracts two numbers', () => {
-        const a = '10', b = '3';
-        const result = compute(a, 'subtract', b);
+    test('subtracts via compute', () => {
+        const result = compute('10', 'subtract', '3');
         expect(result).toBe('7');
     });
 
-    test('multiplies two numbers', () => {
-        const a = '7', b = '8';
-        const result = compute(a, 'multiply', b);
+    test('multiplies via compute', () => {
+        const result = compute('7', 'multiply', '8');
         expect(result).toBe('56');
     });
 
-    test('divides two numbers', () => {
-        const a = '20', b = '4';
-        const result = compute(a, 'divide', b);
+    test('divides via compute', () => {
+        const result = compute('20', 'divide', '4');
         expect(result).toBe('5');
     });
 
-    test('returns Error on division by zero', () => {
-        const a = '10', b = '0';
-        const result = compute(a, 'divide', b);
+    test('returns Error on division by zero via compute', () => {
+        const result = compute('10', 'divide', '0');
         expect(result).toBe('Error');
     });
 
     test('returns second operand for unknown operator', () => {
-        const a = '10', b = '5';
-        const result = compute(a, null, b);
+        const result = compute('10', null, '5');
         expect(result).toBe('5');
     });
 
-    test('handles decimal results in addition', () => {
-        const a = '0.1', b = '0.2';
-        const result = compute(a, 'add', b);
-        expect(isValidNumber(result)).toBe(true);
+    test('handles decimal results', () => {
+        const result = compute('0.1', 'add', '0.2');
         expect(Number(result)).toBeCloseTo(0.3, 10);
-    });
-
-    test('handles negative numbers in multiplication', () => {
-        const a = '-4', b = '3';
-        const result = compute(a, 'multiply', b);
-        expect(result).toBe('-12');
-    });
-
-    test('handles large numbers without overflow', () => {
-        const a = '999999999999', b = '1';
-        const result = compute(a, 'add', b);
-        expect(result).toBe('1000000000000');
     });
 });
 
-describe('percent', () => {
+describe('evaluate', () => {
+    // --- Happy path ---
+    test('evaluates addition expression', () => {
+        const result = evaluate('3+4');
+        expect(result).toBe('7');
+    });
+
+    test('evaluates subtraction expression', () => {
+        const result = evaluate('10-3');
+        expect(result).toBe('7');
+    });
+
+    test('evaluates multiplication expression', () => {
+        const result = evaluate('6*7');
+        expect(result).toBe('42');
+    });
+
+    test('evaluates division expression', () => {
+        const result = evaluate('20/4');
+        expect(result).toBe('5');
+    });
+
+    // --- Edge cases ---
+    test('evaluates expression with spaces', () => {
+        const result = evaluate(' 10 + 5 ');
+        expect(result).toBe('15');
+    });
+
+    test('evaluates decimal expression', () => {
+        const result = evaluate('0.1+0.2');
+        expect(Number(result)).toBeCloseTo(0.3, 10);
+    });
+
+    test('evaluates expression with negative numbers', () => {
+        const result = evaluate('-4*3');
+        expect(result).toBe('-12');
+    });
+
+    test('returns Error for division by zero', () => {
+        const result = evaluate('10/0');
+        expect(result).toBe('Error');
+    });
+
+    test('returns Error for empty string', () => {
+        const result = evaluate('');
+        expect(result).toBe('Error');
+    });
+
+    test('returns Error for whitespace-only string', () => {
+        const result = evaluate('   ');
+        expect(result).toBe('Error');
+    });
+
+    test('returns Error for non-string input (number)', () => {
+        const result = evaluate(42);
+        expect(result).toBe('Error');
+    });
+
+    test('returns Error for non-string input (null)', () => {
+        const result = evaluate(null);
+        expect(result).toBe('Error');
+    });
+
+    test('returns Error for invalid characters', () => {
+        const result = evaluate('abc');
+        expect(result).toBe('Error');
+    });
+
+    test('returns Error for malformed expression (missing right operand)', () => {
+        const result = evaluate('5+');
+        expect(result).toBe('Error');
+    });
+
+    test('returns Error for malformed expression (missing left operand)', () => {
+        const result = evaluate('/5');
+        expect(result).toBe('Error');
+    });
+
+    test('evaluates single valid number', () => {
+        const result = evaluate('42');
+        expect(result).toBe('42');
+    });
+
+    test('evaluates single decimal number', () => {
+        const result = evaluate('3.14');
+        expect(result).toBe('3.14');
+    });
+
+    test('returns Error for expression with multiple operators (unsupported)', () => {
+        // Simple calculator evaluates one operator at a time; '2+3*4' contains
+        // an invalid right operand ('3*4') so it should return Error.
+        const result = evaluate('2+3*4');
+        expect(result).toBe('Error');
+    });
+
+    test('handles large numbers', () => {
+        const result = evaluate('999999999999+1');
+        expect(result).toBe('1000000000000');
+    });
+
+    test('returns Error for division by zero with zero numerator', () => {
+        const result = evaluate('0/0');
+        expect(result).toBe('Error');
+    });
+
+    test('evaluates zero divided by number', () => {
+        const result = evaluate('0/5');
+        expect(result).toBe('0');
+    });
+});
+
+describe('percent helper', () => {
     test('converts 50 to 0.5', () => {
-        const input = '50';
-        const result = percent(input);
-        expect(result).toBe('0.5');
+        expect(String(Number('50') / 100)).toBe('0.5');
     });
 
     test('converts 100 to 1', () => {
-        const input = '100';
-        const result = percent(input);
-        expect(result).toBe('1');
+        expect(String(Number('100') / 100)).toBe('1');
     });
 
     test('converts 0 to 0', () => {
-        const input = '0';
-        const result = percent(input);
-        expect(result).toBe('0');
+        expect(String(Number('0') / 100)).toBe('0');
+    });
+
+    test('converts decimal percent', () => {
+        expect(String(Number('0.5') / 100)).toBe('0.005');
     });
 });

@@ -252,5 +252,29 @@
     "ts": 1784337599427,
     "role": "agent",
     "text": "🚀 اجرای تسک «[frontend][boilerplate] استایل‌دهی کامل با CSS بر اساس Genesis Design System» روی /Users/javid/Documents/xxx/ (لوکال، بدون کلون)…"
+  },
+  {
+    "id": "1784337641240-vh292",
+    "ts": 1784337641240,
+    "role": "agent",
+    "text": "✅ اعمال شد (پروژه‌ی محلی، بدون PR) و رفت برای ریویو: [frontend][boilerplate] استایل‌دهی کامل با CSS بر اساس Genesis Design System\n⬆️ push شد.\nفایل‌ها: 4"
+  },
+  {
+    "id": "1784337659379-y05ev",
+    "ts": 1784337659379,
+    "role": "agent",
+    "text": "🏗️ Tech Lead در حال ریویوی «[frontend][boilerplate] استایل‌دهی کامل با CSS بر اساس Genesis Design System»…"
+  },
+  {
+    "id": "1784337659382-kegjq",
+    "ts": 1784337659382,
+    "role": "agent",
+    "text": "⚠️ پروژه‌ی آفلاین: PR باز روی این کارت پیدا نشد. تسک مستقیما به مرحله انجام‌شده (Done) منتقل شد."
+  },
+  {
+    "id": "1784337678372-8ux4u",
+    "ts": 1784337678372,
+    "role": "agent",
+    "text": "🚀 اجرای تسک «[frontend][medium] منطق اصلی ماشین حساب (جاوااسکریپت) + مدیریت خطا» روی /Users/javid/Documents/xxx/ (لوکال، بدون کلون)…"
   }
 ]
