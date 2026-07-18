@@ -2,10 +2,10 @@
   "cards": [
     {
       "id": "ce83b529ab5af49a659a274b",
-      "idList": "todo",
+      "idList": "prog",
       "name": "[frontend][boilerplate] ایجاد ساختار HTML اولیه ماشین حساب",
       "desc": "فایل index.html با نمایشگر (display) و دکمه‌های AC, C, اعداد 0-9, عملگرها (+,-,*,/) و دکمه مساوی (=). استفاده از semantic HTML مانند button, div با role مناسب. حداقل یک container برای کل ماشین حساب.\n\n---\nrepo: /Users/javid/Documents/xxx/\nproject: calc",
-      "dateLastActivity": "2026-07-18T00:37:32.111Z",
+      "dateLastActivity": "2026-07-18T01:16:59.403Z",
       "url": "",
       "labels": [],
       "comments": [],

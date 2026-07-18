@@ -1,0 +1,220 @@
+/* ========================================
+   Calc — Simple Calculator Styles
+   Design System: Genesis-based
+   ======================================== */
+
+/* --- Reset & Base --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FAFAFA;
+    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+    padding: 16px;
+}
+
+/* --- Calculator Container --- */
+.calculator {
+    width: 340px;
+    max-width: 100%;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* --- Display --- */
+.display {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    direction: ltr;
+}
+
+.display__value {
+    color: #1a1a1a;
+    font-family: 'General Sans', 'Segoe UI', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    transition: font-size 0.15s ease;
+}
+
+/* --- Buttons Grid --- */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* --- Button Base --- */
+.btn {
+    height: 56px;
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn:focus-visible {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+}
+
+/* --- Button Variants --- */
+
+/* Numbers */
+.btn--number {
+    background: #f0f0f0;
+    color: #1a1a1a;
+}
+
+.btn--number:hover {
+    background: #e4e4e4;
+}
+
+.btn--number:active {
+    background: #d6d6d6;
+}
+
+/* Operators */
+.btn--operator {
+    background: #e8eaff;
+    color: #6366F1;
+}
+
+.btn--operator:hover {
+    background: #d4d6fc;
+}
+
+.btn--operator:active {
+    background: #bfc2f8;
+}
+
+/* Primary (equals) */
+.btn--primary {
+    background: #6366F1;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.btn--primary:hover {
+    background: #5254db;
+}
+
+.btn--primary:active {
+    background: #4547c7;
+}
+
+/* Secondary (AC, C) */
+.btn--secondary {
+    background: #e6f7e6;
+    color: #20970B;
+    font-weight: 600;
+}
+
+.btn--secondary:hover {
+    background: #d0f0d0;
+}
+
+.btn--secondary:active {
+    background: #b8e8b8;
+}
+
+/* Neutral (percent, etc.) */
+.btn--neutral {
+    background: #f0f0f0;
+    color: #9C9C9C;
+}
+
+.btn--neutral:hover {
+    background: #e4e4e4;
+    color: #7a7a7a;
+}
+
+.btn--neutral:active {
+    background: #d6d6d6;
+}
+
+/* Special: zero spans slightly wider visually */
+.btn--zero {
+    /* no extra span, just visual consistency */
+}
+
+/* --- Responsive --- */
+@media (max-width: 400px) {
+    .calculator {
+        padding: 16px;
+        border-radius: 10px;
+    }
+
+    .display {
+        padding: 12px 16px;
+        min-height: 60px;
+    }
+
+    .display__value {
+        font-size: 28px;
+    }
+
+    .btn {
+        height: 48px;
+        font-size: 16px;
+    }
+
+    .buttons {
+        gap: 8px;
+    }
+}
+
+@media (min-width: 768px) {
+    .calculator {
+        width: 380px;
+        padding: 28px;
+    }
+
+    .btn {
+        height: 60px;
+        font-size: 20px;
+    }
+
+    .display__value {
+        font-size: 42px;
+    }
+}
