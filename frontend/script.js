@@ -218,9 +218,23 @@ function resetState() {
     updateDisplay();
 }
 
+/**
+ * Delete the last character from current input (backspace).
+ * If only one character remains or input is '0', reset to '0'.
+ */
 function clearLastEntry() {
-    state.currentInput = '0';
-    state.displayText = '0';
+    if (state.shouldReset) {
+        return;
+    }
+
+    const len = state.currentInput.length;
+    if (len <= 1 || state.currentInput === '0') {
+        state.currentInput = '0';
+    } else {
+        state.currentInput = state.currentInput.slice(0, -1);
+    }
+
+    state.displayText = state.currentInput;
     state.shouldReset = false;
     updateDisplay();
 }
@@ -408,8 +422,14 @@ function handleKeyboard(e) {
 
 /** ---------- Init ---------- */
 
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('.buttons')?.addEventListener('click', handleButtonClick);
+function init() {
+    const buttons = document.querySelector('.buttons');
+    if (buttons) {
+        buttons.addEventListener('click', handleButtonClick);
+    }
     document.addEventListener('keydown', handleKeyboard);
     updateDisplay();
-});
+}
+
+// Script is placed at the end of <body>, so DOM is ready.
+init();
